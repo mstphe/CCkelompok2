@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ETHOS — Etika di Era Teknologi Informasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1120;--deep:#172554;--blue:#2563EB;--cyan:#38BDF8;--soft:#F8FAFC;--slate:#94A3B8;--line:rgba(148,163,184,.18);--glass:rgba(23,37,84,.38);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:90px}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--soft);font:400 16px/1.7 "Plus Jakarta Sans",system-ui,sans-serif;overflow-x:hidden}
+.lenis.lenis-smooth{scroll-behavior:auto}
+h1,h2,h3,h4{line-height:1.15;margin:0;font-weight:800;letter-spacing:-.02em}
+p{margin:0 0 .6em;color:#cbd5e1}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99}
+#rp{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));z-index:100}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;opacity:.5}
+nav{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:50%;translate:-50% 0;width:min(1060px,calc(100% - 24px));z-index:60;display:flex;align-items:center;gap:6px;padding:8px 10px 8px 20px;border-radius:999px;border:1px solid var(--line);background:rgba(11,17,32,.45);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:background .4s,box-shadow .4s}
+nav.s{background:rgba(11,17,32,.82);box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.logo{font-weight:800;letter-spacing:.14em;margin-right:auto}
+.logo i{display:inline-block;width:10px;height:10px;border-radius:3px;rotate:45deg;background:var(--cyan);margin-right:9px;box-shadow:0 0 14px var(--cyan)}
+nav a,nav .pb{padding:8px 14px;border-radius:999px;font-size:14px;color:var(--slate);background:none;border:0;transition:.25s}
+nav a:hover,nav a.on,nav .pb:hover{color:#fff;background:rgba(56,189,248,.12)}
+.pb{display:flex;gap:8px;align-items:center}
+.pb b{font-size:12px;color:var(--cyan)}
+#ham{display:none}
+@media(max-width:760px){#ham{display:block;padding:8px;border:0;background:none}nav .lk{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;background:rgba(11,17,32,.95);border:1px solid var(--line);border-radius:20px;padding:10px}nav .lk.o{display:flex}}
+.lk{display:flex;gap:2px;align-items:center}
+#toc{position:fixed;top:calc(env(safe-area-inset-top,0px) + 74px);right:max(12px,calc(50% - 530px));width:min(320px,calc(100% - 24px));z-index:59;padding:16px;border-radius:22px;border:1px solid var(--line);background:rgba(11,17,32,.92);backdrop-filter:blur(18px);display:none}
+#toc.o{display:block}
+#toc a{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:12px;font-size:14px;color:var(--slate)}
+#toc a:hover,#toc a.on{background:rgba(56,189,248,.1);color:#fff}
+#toc a em{margin-left:auto;font-style:normal;color:var(--cyan)}
+.bar{height:6px;border-radius:9px;background:rgba(148,163,184,.2);overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:9px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+main{position:relative;z-index:1}
+.wrap{width:min(1060px,calc(100% - 32px));margin:0 auto}
+#home{min-height:100svh;display:grid;align-items:center;padding:120px 0 60px;position:relative}
+#home .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+@media(max-width:860px){#home .wrap{grid-template-columns:1fr}#globe{order:-1;max-width:300px;margin:0 auto}}
+.tag{display:inline-block;font-size:12px;letter-spacing:.2em;color:var(--cyan);padding:7px 14px;border:1px solid rgba(56,189,248,.35);border-radius:999px;margin-bottom:22px}
+h1{font-size:clamp(38px,6.4vw,76px)}
+.sub{font-size:clamp(16px,2vw,19px);max-width:520px;margin:22px 0 32px;color:var(--slate)}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:999px;border:1px solid var(--line);background:rgba(148,163,184,.08);font-weight:700;transition:box-shadow .3s,border-color .3s}
+.btn.p{background:linear-gradient(135deg,var(--blue),#1d4ed8);border-color:transparent;animation:pulse 3s infinite}
+.btn:hover{border-color:var(--cyan)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.5)}50%{box-shadow:0 0 0 12px rgba(37,99,235,0)}}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);translate:-50% -50%;scale:0;animation:rp .6s ease-out forwards;pointer-events:none}
+@keyframes rp{to{scale:1;opacity:0}}
+.sp .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+.sp .w i{display:inline-block;font-style:normal}
+.sp{margin-right:0}
+#globe svg{width:100%;height:auto;overflow:visible}
+.ring{transform-origin:200px 200px;animation:spin 40s linear infinite}
+.ring.r2{animation-duration:60s;animation-direction:reverse}
+@keyframes spin{to{rotate:360deg}}
+.nd{animation:tw 3s ease-in-out infinite}
+@keyframes tw{50%{opacity:.25}}
+section.sec{padding:110px 0 40px;position:relative}
+.sec h2{font-size:clamp(30px,4.6vw,52px);margin-bottom:14px;max-width:820px}
+.lead{max-width:640px;color:var(--slate);margin-bottom:36px;font-size:17px}
+.mk{display:flex;align-items:center;gap:14px;margin-bottom:18px;color:var(--cyan);font-weight:700;font-size:14px}
+.mk:before{content:"";width:34px;height:2px;background:var(--cyan)}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:24px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.ov{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:760px){.ov{grid-template-columns:1fr 1fr}}
+.ov div{padding:20px;border-radius:20px}
+.ov small{color:var(--slate);display:block;font-size:13px}
+.ov b{font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{position:relative;padding:20px 22px;border-radius:18px;border:1px solid var(--line);background:rgba(11,17,32,.55);transition:translate .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s,background .3s;translate:var(--mx,0) var(--my,0)}
+.card:hover{translate:var(--mx,0) calc(var(--my,0px) - 5px);border-color:rgba(56,189,248,.5);box-shadow:0 18px 44px rgba(37,99,235,.22)}
+.card h4{font-size:17px;margin-bottom:8px;color:#fff}
+.card p,.card li{font-size:14.5px}
+.card ul{margin:0;padding-left:18px;color:#cbd5e1}
+.card.k{border-color:rgba(56,189,248,.45);background:rgba(37,99,235,.14)}
+.n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:10px;background:rgba(37,99,235,.35);color:var(--cyan);font-weight:800;font-size:14px;margin-bottom:10px}
+hl,.hl{color:var(--cyan);font-weight:700}
+.blk{margin:14px 0;overflow:hidden}
+.blk summary{list-style:none;cursor:pointer;padding:22px 26px;font-weight:800;font-size:19px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.blk summary::-webkit-details-marker{display:none}
+.blk summary:after{content:"+";width:32px;height:32px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--cyan);font-size:20px;transition:rotate .3s;flex:none}
+.blk[open] summary:after{rotate:45deg}
+.bd{padding:0 26px 24px}
+.tl{list-style:none;margin:10px 0;padding:0 0 0 26px;border-left:2px solid rgba(56,189,248,.3)}
+.tl li{position:relative;padding:0 0 22px 18px}
+.tl li:before{content:"";position:absolute;left:-36px;top:6px;width:14px;height:14px;border-radius:4px;rotate:45deg;background:var(--bg);border:2px solid var(--cyan);box-shadow:0 0 12px rgba(56,189,248,.6)}
+.tl b{display:block;color:#fff;font-size:17px}
+.tl .y{color:var(--cyan);font-size:13px;font-weight:700}
+.tl p{font-size:14.5px;margin:4px 0 0}
+.tree{display:flex;flex-direction:column;align-items:center;gap:10px;margin:14px 0}
+.tree .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+.nd2{padding:14px 18px;border-radius:16px;border:1px solid var(--line);background:rgba(37,99,235,.14);text-align:center;font-size:14px;flex:1 1 220px;max-width:340px}
+.nd2 b{display:block;color:#fff}
+.nd2.t{background:linear-gradient(135deg,var(--blue),#1e40af);border:0;max-width:300px}
+.ar{color:var(--cyan);font-size:20px;line-height:1}
+.pill{display:inline-block;padding:5px 12px;margin:3px 4px 3px 0;border-radius:999px;border:1px solid var(--line);font-size:13px;color:#cbd5e1;background:rgba(148,163,184,.07)}
+.lay{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px}
+.lay button{padding:12px 10px;border-radius:14px;border:1px solid var(--line);background:rgba(11,17,32,.5);font-size:13px;font-weight:700;transition:.25s}
+.lay button.on{background:var(--blue);border-color:var(--cyan);box-shadow:0 0 22px rgba(37,99,235,.5)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.vs{grid-template-columns:1fr}}
+.vs .card h4 span{display:block;font-size:12px;color:var(--cyan);font-weight:700;margin-bottom:4px}
+.eq{display:flex;gap:12px;flex-wrap:wrap}
+.eq .card{flex:1 1 220px}
+.good{border-color:rgba(52,211,153,.5)}.bad{border-color:rgba(248,113,113,.5)}
+.flow{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin:14px 0}
+.flow .card{flex:1 1 160px;text-align:center}
+.flow .ar{align-self:center}
+.stat{font-size:34px;font-weight:800;color:var(--cyan);letter-spacing:-.03em}
+.stat small{display:block;font-size:13px;color:var(--slate);font-weight:400;letter-spacing:0}
+.src{font-size:12px;color:var(--slate)}
+.mf{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:30px;padding:18px 22px;border-radius:20px}
+.mf .btn{padding:11px 20px;font-size:14px}
+.btn.dn{background:rgba(52,211,153,.16);border-color:rgba(52,211,153,.6)}
+.q{padding:24px;margin:14px 0;border-radius:20px}
+.q h4{font-size:18px;margin-bottom:14px}
+.q button.o{display:block;width:100%;text-align:left;padding:12px 16px;margin:8px 0;border-radius:14px;border:1px solid var(--line);background:rgba(11,17,32,.5);transition:.25s;font-size:15px}
+.q button.o:hover:not(:disabled){border-color:var(--cyan);background:rgba(56,189,248,.1)}
+.q button.ok{border-color:#34d399!important;background:rgba(52,211,153,.18)!important}
+.q button.no{border-color:#f87171!important;background:rgba(248,113,113,.15)!important}
+.fb{font-size:14px;margin-top:8px;display:none;color:#cbd5e1}
+textarea{width:100%;min-height:80px;margin-top:10px;border-radius:14px;border:1px solid var(--line);background:rgba(11,17,32,.6);color:#fff;padding:12px;font:inherit;resize:vertical}
+footer{position:relative;z-index:1;margin-top:120px;padding:56px 0 40px;border-top:1px solid var(--line);text-align:center}
+footer p{color:var(--slate);margin:6px 0}
+#top{position:fixed;right:18px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(11,17,32,.85);backdrop-filter:blur(10px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:.3s;z-index:60}
+#top.v{opacity:1;pointer-events:auto}
+svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="rp"></div>
+<div class="orb" style="width:520px;height:520px;background:#2563EB;top:-120px;left:-160px" data-p="60"></div>
+<div class="orb" style="width:420px;height:420px;background:#38BDF8;top:40vh;right:-160px;opacity:.28" data-p="-90"></div>
+
+<nav id="nav" aria-label="Navigasi utama">
+  <a class="logo" href="#home"><i></i>ETHOS</a>
+  <div class="lk" id="lk">
+    <a href="#home">Home</a><a href="#m1">Materi Pembelajaran</a><a href="#about">Tentang Materi</a>
+    <button class="pb" id="pb" aria-expanded="false" aria-controls="toc">Progress <b id="pct">0%</b></button>
+  </div>
+  <button id="ham" aria-label="Buka menu"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav>
+<div id="toc" role="dialog" aria-label="Daftar isi"></div>
+
+<main>
+<header id="home">
+  <div class="wrap">
+    <div>
+      <span class="tag">INTERACTIVE LEARNING EXPERIENCE</span>
+      <h1 class="sp" id="h1">ETIKA DI ERA TEKNOLOGI INFORMASI</h1>
+      <p class="sub">Memahami etika, moral, sosial, dan tanggung jawab dalam menghadapi perkembangan teknologi informasi.</p>
+      <a class="btn p" href="#m1">Mulai Belajar</a> <a class="btn" href="#about">Jelajahi Materi</a>
+    </div>
+    <div id="globe" aria-hidden="true"></div>
+  </div>
+</header>
+
+<section class="sec" id="about"><div class="wrap">
+  <div class="mk">Tentang Materi</div>
+  <h2 class="sp">Empat bagian untuk memahami etika dunia maya</h2>
+  <p class="lead rv">Materi ini bersumber dari slide Pertemuan 06 dan disusun ulang menjadi modul interaktif tanpa mengubah istilah maupun urutan pembahasannya.</p>
+  <div class="ov rv">
+    <div class="glass"><small>Nama materi</small><b>Etika di Era Teknologi Informasi</b></div>
+    <div class="glass"><small>Jenis</small><b>Interactive Learning</b></div>
+    <div class="glass"><small>Fokus</small><b>Cyberethics dan perkembangan teknologi informasi</b></div>
+    <div class="glass"><small>Total pembahasan</small><b>4 bagian utama</b></div>
+  </div>
+  <div class="glass rv" style="padding:22px 26px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px"><b>Progress belajar</b><span id="pct2" class="hl">0 dari 4 modul selesai</span></div>
+    <div class="bar"><span id="b2"></span></div>
+  </div>
+  <h3 style="margin:44px 0 6px;font-size:22px">Pertanyaan mendasar</h3>
+  <div class="grid" id="base"></div>
+</div></section>
+
+<div id="mods"></div>
+
+<section class="sec" id="quiz"><div class="wrap">
+  <div class="mk">Uji pemahaman</div>
+  <h2 class="sp">Mini quiz dan refleksi</h2>
+  <p class="lead rv">Jawab lima pertanyaan berdasarkan materi. Setiap jawaban langsung diberi umpan balik.</p>
+  <div id="qz"></div>
+  <div class="glass q rv" id="rf"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="logo" style="font-size:18px"><i></i>ETHOS</div>
+  <p>ETHOS — Interactive Learning Platform</p>
+  <p>Etika di Era Teknologi Informasi</p>
+  <p>Learning through understanding.</p>
+  <p><a class="hl" href="#home" data-top>Back to top</a></p>
+</div></footer>
+<button id="top" aria-label="Kembali ke atas" data-top><svg class="i" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+<script>
+const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const card=(t,x,c='')=>`<div class="card ${c}"><h4>${t}</h4><p>${x}</p></div>`;
+const grid=(a,c='')=>`<div class="grid ${c}">${a.join('')}</div>`;
+const blk=(t,b,o)=>`<details class="blk glass rv"${o?' open':''}><summary>${t}</summary><div class="bd">${b}</div></details>`;
+const ul=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+const pills=a=>a.map(x=>`<span class="pill">${x}</span>`).join('');
+const nd=(t,x,c='')=>`<div class="nd2 ${c}"><b>${t}</b>${x}</div>`;
+
+/* ---------- Konten ---------- */
+const L=[
+ ['B-to-C','Environment Establishment',['E-park','E-AlQuran','E-health','Internet mall','Entertainment','Reserve Agent'],['Gym','Court','Restaurant','The stores','Mosque','Theater','House']],
+ ['B-to-B','Industry Infra',['Product NW','Research NW','Supply NW','E-procurement','E-trade','Virtual Co','Sales NW'],['Institute','Factory','Major Co','Physical Co','Trade Co','Small Co','Sales Co']],
+ ['B-to-G','Public Infra',['E-edu','Virtual-bank','E-govern','Cyber insure','Cyber S1'],['Land','Bank','School','Public site','Public office','Police']],
+ ['Basic Infra','Basic Infra',['High-speed Internet','Security','E-Auth','E-pay'],['Water','Road','Communication','Energy']],
+ ['Society rules','Law system',['Basic e-trade Law','E-Signature Law','International Law','E-network Law','Intellectual Property Law'],['City Cost.. Law','Building Law','Institutions Commercial Law','Civil Law','Criminal Law']]
+];
+const M=[
+{id:'m1',t:'Cyberethics (Etika Dunia Maya)',d:'Pengertian, fase, landasan moral, dan lima dimensi moral di era informasi.',b:[
+ blk('Pengertian Cyberethics',`<div class="grid two">${card('Cyberethics: “etika dunia maya”','Studi terkait moral, legal, dan pengaruh sosial serta dampaknya sebagai akibat dari kemajuan teknologi informasi.','k')}${card('Teknologi informasi dalam arti luas','Tidak terbatas pada peralatan komputer dan telekomunikasi.<br>'+pills(['Hand-held devices','PC','Mainframe','Internet','Private network']))}</div><p class="src">Sumber slide: Herman T. Tavani, Ethics &amp; Technology, John Wiley &amp; Sons, 2004.</p>`,1),
+ blk('Empat fase Cyberethics',`<ol class="tl">
+ <li><span class="y">Fase 1 · 1950–1960s</span><b>Stand alone machine, Main frame</b><p>Isu: Artificial Intelligence (AI), DB privacy.</p></li>
+ <li><span class="y">Fase 2 · 1970–1980s</span><b>Minicomp dan PC interconnected via private network</b><p>Isu fase 1 + intellectual property, s/w piracy, computer crime, communication privacy.</p></li>
+ <li><span class="y">Fase 3 · 1990–sekarang</span><b>Internet dan www</b><p>Isu fase 1+2 + free speech, anonimity, legal juridiction, virtual communities, dll.</p></li>
+ <li><span class="y">Fase 4 · Sekarang–masa depan</span><b>Convergence of ICT with bio and nano technology</b><p>Isu 1–3 + artificial electronic agents (bots) dengan decision making capabilities, serta perkembangan nanocomputing, bioinformatics, dan computational genomics.</p></li></ol>`),
+ blk('Cyberethics sebagai Applied Ethics',`<div class="grid">${card('1 · Professional Ethics','Cyberethics dipandang dari Profesional Ethics (comp professionals).')}${card('2 · Philosophical Ethics','Cyberethics dipandang dari Philosophical Ethics (mempengaruhi norma dan sosial politik).')}${card('3 · Descriptive Ethics','Cyberethics dipandang dari Descriptive Ethics (mempengaruhi aspek tertentu dari moral sistem).')}</div>
+ <h4 style="margin:22px 0 4px">Descriptive vs Normative</h4><div class="vs">${card('<span>Descriptive</span>Report or describe what is the case','Melaporkan atau menggambarkan apa yang terjadi.','k')}${card('<span>Normative</span>Prescribe what ought to be the case','Menetapkan apa yang seharusnya terjadi.','k')}</div>
+ <div class="ar" style="text-align:center;margin:8px 0">↓ Normative terbagi menjadi</div>
+ <div class="vs">${card('Non-Moral','Prescribe or evaluate in matters involving standards, such as art or sport (eg. criteria of a good painting or an outstanding athlete).')}${card('Moral','Prescribe or evaluate in matters having to do with fairness and obligation (eg. criteria for just and unjust actions and policies).')}</div>`),
+ blk('Ethics and Morality: komponen sistem moral',`<p><b>What is morality?</b> Basic components of Moral System:</p><div class="tree">${nd('Basic components of Moral System','','t')}<div class="ar">↓</div><div class="row">${nd('Rules of conducts','Action-guiding rules, berupa directives atau social policies')}${nd('Principles of Evaluation','Evaluative standards untuk menjustifikasi rules of conduct. Contoh: social utility dan justice as fairness')}</div><div class="ar">↓</div><div class="row">${nd('Microlevel ethical rules','Rules for guiding the actions of individuals. Contoh directives: do not steal, do not harm others')}${nd('Macrolevel ethical rules','Rules for establishing social policies. Contoh: software should be protected, privacy should be respected')}</div></div>
+ <h4 style="margin:26px 0 8px">Components of Moral System</h4><div class="tree"><div class="row">${nd('Religion','')}${nd('Philosophical ethics','')}${nd('Law','')}</div><p class="src">Dasar untuk justifikasi prinsip moral</p><div class="ar">↓</div>${nd('Principles of Evaluation + Rules of Conduct','Prinsip moral dan aturan','t')}<div class="ar">↑</div>${nd('Core Values','Sumber dari aturan moral')}</div>`),
+ blk('Lima dimensi moral di era informasi',`<p>Pengenalan teknologi informasi baru menimbulkan efek riak: isu etika, sosial, dan politik yang harus ditangani di tingkat individu, masyarakat (society), dan polity. Isu-isu ini memiliki <span class="hl">lima dimensi moral</span>.</p>${grid([
+ card('<span class="n">1</span><br>Information Rights &amp; Obligations',ul(['Hak apa yang dimiliki orang berkaitan dengan informasi tentang diri mereka','Menjual informasi pelanggan','Dapatkah mereka melacak perilaku pelanggan?'])),
+ card('<span class="n">2</span><br>Property Rights &amp; Obligations',ul(['Siapa yang memiliki perangkat lunak dan data; bagaimana melindungi hak kekayaan intelektual','Music, movies, software sharing, dll.'])),
+ card('<span class="n">3</span><br>System Quality',ul(['Apa standar untuk data dan sistem jaminan mutu','Testing software, bugs: siapa bertanggung jawab bila “bug” menimbulkan masalah?'])),
+ card('<span class="n">4</span><br>Quality of Life',ul(['Bagaimana memastikan sistem informasi tidak menurunkan kualitas hidup masyarakat?','Computing anywhere, any time (work/family/leisure)','Computer crime: new technology, new ways to steal'])),
+ card('<span class="n">5</span><br>Accountability &amp; Control',ul(['Siapa yang harus bertanggung jawab ketika seseorang dirugikan oleh teknologi?']))])}<p class="src">Diagram: Kenneth Laudon, Managing the Digital Firm, Prentice Hall 2011.</p>`),
+ blk('Impact of Ethical Issues in Society and Politics',`<div class="flow">${card('Social issues spring from ethical issues',ul(['Masyarakat harus menempatkan perhatian dan harapan pada setiap individu sebagai basis nilai etika yang benar','Membuka kesempatan perdebatan di masyarakat tentang harapan agar individu berperilaku benar','Censorship on the web?']))}<span class="ar">→</span>${card('Political issues spring from social conflict',ul(['Harus berpijak pada landasan hukum yang benar sebagai acuan penegakan hukum agar setiap individu berperilaku benar','Censorship laws?']))}</div>`),
+ blk('Trend teknologi yang mendorong perlunya etika dunia maya',grid([
+ card('<span class="n">1</span><br>Peningkatan kecepatan komputer','Moore’s law: IC’s speed double dalam 2 tahun, processor speed double setiap 18 bulan (Intel). Setiap institusi/organisasi semakin bergantung pada komputer.'),
+ card('<span class="n">2</span><br>Penurunan cepat harga media penyimpan (HD)','Setiap individu dapat menyimpan data dengan mudah dan murah. Teknologi cloud memungkinkan penyimpanan nir-perangkat.'),
+ card('<span class="n">3</span><br>Kemajuan teknologi jaringan dan internet','Memungkinkan pemindahan data personal atau institusi dari “remote location” secara cepat dan mudah.'),
+ card('<span class="n">4</span><br>Kemajuan teknik analisis data (data mining)','<b>Profiling:</b> agregasi data untuk menentukan profile individu.<br><b>NORA (Non-obvious Relationship Awareness):</b> kompilasi data dari berbagai resource untuk mencari “hidden connection” dalam membantu penentuan identitas kriminal atau terorisme.')]))
+]},
+{id:'m2',t:'Perkembangan Cyberspace',d:'Dari revolusi industri ke revolusi digital, dan lahirnya dunia maya.',b:[
+ blk('Perubahan dan tantangan ke depan',`<ol class="tl">
+ <li><span class="y">1814 · Terutama di Real Space</span><b>Steam Engine</b><p>Industry Revolution. Dari Agricultural Society menuju Industrial Society.</p></li>
+ <li><span class="y">1873 · Terutama di Real Space</span><b>Telephone</b><p>Era Analog Electronics.</p></li>
+ <li><span class="y">1920 · Terutama di Real Space</span><b>TV</b></li>
+ <li><span class="y">1973 · Terutama di Real Space</span><b>Computer</b><p>Information Renovation.</p></li>
+ <li><span class="y">2010–2025 · Terutama di Cyber space</span><b>Digital Revolution</b><p>Digital Electronics menuju Information Society.</p></li></ol>
+ <p>Slide menampilkan lima gelombang (1st–5th Wave) dan tiga masyarakat: ${pills(['Agricultural Society','Industrial Society','Information Society'])}</p>`,1),
+ blk('Perkembangan Cyberspace: Access, Networks, Applications &amp; Contents',`<p class="hl">Perkembangan IPTEK di “Akses, Network, Aplikasi dan Konten” menumbuhkan Cyberspace (dunia maya).</p><div class="flow">${card('Access',pills(['PC','Mobile','Digital TV','Music','PDA','Videoconsoles','Emerging platforms']))}<span class="ar">→</span>${card('Networks',pills(['Cable','3G','DSL','Satellite','PLC','Wireless','Fiber']))}<span class="ar">→</span>${card('Applications &amp; Contents',pills(['Advertising','VoIP','Music','Education','eFinance','Communications','Film &amp; TV','eCommerce','Games','VoD','Connectivity services']))}</div>`),
+ blk('Transformasi Sosial-Budaya',`<div class="grid two">${card('Yang bertransformasi',ul(['Nilai-nilai (budaya, sosial, etika, pengetahuan, dll)','Regulasi','Pembangunan','Aktivitas-aktivitas (transaksi, dll)']),'k')}${card('Contoh',`<div class="flow" style="flex-direction:column;margin:0">${['Commerce → e-Commerce','Banking → e-Banking','Notary → Cyber Notary','Voting → e-Voting, dll.'].map(x=>`<span class="pill">${x}</span>`).join('')}</div>`)}</div>`)
+]},
+{id:'m3',t:'Real Space = Cyber Space',d:'Dunia nyata dan dunia maya memakai norma yang sama.',b:[
+ blk('Interaction Layers',`<p>Pilih satu lapisan untuk membandingkan Cyberspace (Internet) dengan Real World.</p><div class="lay" id="lay">${L.map((l,i)=>`<button data-l="${i}" class="${i?'':'on'}">${l[0]}</button>`).join('')}</div><div class="vs" id="lv"></div>`,1),
+ blk('Prinsip Real Space = Cyber Space',`<div class="eq">${card('Baik di dunia nyata = Baik di dunia maya','','good')}${card('Buruk di dunia nyata = Buruk di dunia maya','','bad')}${card('Norma di dunia nyata dan maya sama','','k')}</div>
+ <h4 style="margin:24px 0 6px">Sebuah kekhawatiran</h4><div class="flow">${card('Konten negatif','')}<span class="ar">→</span>${card('Anak mengaksesnya','')}<span class="ar">→</span>${card('Kebiasaan buruk usia dewasa','','bad')}</div><p>Kebiasaan buruk/negatif di dunia nyata menjadi hal yang biasa di dunia maya, akhirnya menjadi hal yang biasa di dunia nyata.</p>`)
+]},
+{id:'m4',t:'Kasus dan Penanganan',d:'Etika, hukum, karakteristik internet, dan kejahatan komputer.',b:[
+ blk('Etika cyberspace dan real space',`<div class="grid two">${card('Etika di real space','Contoh: susila, menghargai orang lain, menghargai reputasi orang. Etiket yang sama harus tetap dijunjung tinggi di cyber space.','k')}${card('Koridor norma di real space',pills(['Norma kesopanan','Norma kesusilaan','Norma sosial','Norma adat','Norma hukum']))}</div>${card('Aspek hukum','Norma hukum yang menjadi panduan di real space tersebar pada berbagai produk hukum, mulai dari Kitab Undang-Undang Hukum Pidana (KUHP), Kitab Undang-Undang Hukum Perdata (KUHPer), dan berbagai produk Undang-Undang.')}`,1),
+ blk('Fakta dan data pertumbuhan internet Indonesia',`<div class="grid two">${card('Fakta',ul(['Teknologi informasi telah mengubah perilaku dan peradaban masyarakat global','Selain memberi manfaat, teknologi informasi juga menjadi sarana efektif perbuatan melawan hukum']),'k')}${card('Perubahan paradigma','Dari yang <b>tak tertulis</b> menjadi <b>tertulis</b>, lalu <b>ter-elektronik</b>. Banyak bukti kejahatan kini berada dalam format elektronik (digital evidence).')}</div>
+ <div class="grid"><div class="card"><div class="stat">2,26 miliar<small>pemakai internet dunia (32% penduduk dunia)</small></div></div><div class="card"><div class="stat">55 juta<small>pemakai internet Indonesia (22% penduduk)</small></div></div><div class="card"><div class="stat">2 juta<small>email terkirim per detik</small></div></div><div class="card"><div class="stat">42,48 juta<small>pengguna Facebook (no. 4 dunia)</small></div></div><div class="card"><div class="stat">19,5 juta<small>pengguna Twitter (no. 5 dunia)</small></div></div></div>
+ <p>Semakin banyak orang dan pelaku usaha di dunia maya membawa pengaruh besar pada perdagangan tingkat nasional, regional, maupun global.</p><p class="src">Data dari slide (2011–2012). Sumber: apjii.or.id, Markplus Insight 2011, checkbook.com April 2012, semiocast.com (Maret 2012).</p>`),
+ blk('Karakteristik Internet',`<p><span class="hl">Positif</span> dalam banyak hal, namun <span class="hl">berdampak negatif</span> bila tidak dilengkapi sistem pengamanan yang memadai, sehingga rawan terhadap penyalahgunaan konten (pengambilan, perusakan, perubahan, pendistribusian, dan lain-lain).</p>${grid([card('Korespondensi','Gmail, Yahoo'),card('Komunikasi langsung','Yahoo Messenger, Google Talk, eBuddy, Skype, mig33'),card('Pencarian informasi','detikcom, goal.com'),card('Berbagi info &amp; data','Blogger, WordPress, flickr'),card('Transaksi','Amazon, PayPal'),card('Interaksi sosial','Facebook, Twitter, Koprol'),card('Hiburan','YouTube, Football Saga')])}`),
+ blk('Kejahatan komputer',`<p>Kejahatan komputer meliputi jenis kegiatan yang bersifat melawan hukum. Pada umumnya terbagi dalam dua kelompok:</p><div class="grid two">${card('Komputer sebagai sasaran','Komputer, sistem elektronik, dan informasi elektronik menjadi sasaran, seperti serangan virus dan serangan lain.','bad')}${card('Komputer sebagai alat atau sarana','Seperti pencurian data, penipuan, ancaman, dan lain-lain. Hampir semua jenis kejahatan tradisional dapat memanfaatkan komputer/sistem elektronik dan mempersulit pelacakannya.','bad')}</div>
+ <h4 style="margin:22px 0 6px">Perkembangan istilah</h4><div class="flow">${card('Computer crime','Kejahatan komputer')}<span class="ar">→</span>${card('Internet crime','Kejahatan internet')}<span class="ar">→</span>${card('Cybercrime','Kejahatan di dunia maya','k')}</div>
+ <p class="src">Catatan: slide sumber tidak menjabarkan prosedur penanganan kasus lebih rinci selain rujukan hukum (KUHP, KUHPer, dan Undang-Undang) di atas, sehingga tidak ditambahkan di sini.</p>`)
+]}];
+const Q=[
+ ['Apa yang dimaksud dengan Cyberethics menurut materi?',['Studi terkait moral, legal, dan pengaruh sosial akibat kemajuan teknologi informasi','Studi tentang cara membuat perangkat lunak','Aturan khusus yang hanya berlaku di dunia nyata','Studi tentang harga perangkat komputer'],0,'Cyberethics adalah “etika dunia maya”: studi moral, legal, dan pengaruh sosial dari kemajuan teknologi informasi.'],
+ ['Fase Cyberethics mana yang ditandai internet dan www, dengan isu free speech dan anonimity?',['Fase 1','Fase 2','Fase 3','Fase 4'],2,'Fase 3 (1990–sekarang) adalah era internet dan www.'],
+ ['Manakah yang BUKAN salah satu dari lima dimensi moral di era informasi?',['System Quality','Quality of Life','Accountability & Control','Network Speed'],3,'Lima dimensinya: Information Rights, Property Rights, System Quality, Quality of Life, serta Accountability & Control.'],
+ ['Menurut prinsip Real Space = Cyber Space, bagaimana norma di dunia nyata dan dunia maya?',['Berbeda sepenuhnya','Sama','Hanya dunia maya yang punya norma','Hanya dunia nyata yang punya norma'],1,'Baik di dunia nyata = baik di dunia maya; buruk = buruk; norma keduanya sama.'],
+ ['Serangan virus termasuk kelompok kejahatan komputer yang mana?',['Komputer sebagai alat atau sarana','Komputer sebagai sasaran','Kejahatan tradisional','Bukan kejahatan'],1,'Serangan virus termasuk kejahatan dengan komputer, sistem, dan informasi elektronik sebagai sasaran.']];
+
+/* ---------- Render ---------- */
+$('#base').innerHTML=['Apa keterkaitan antara etika, moral, sosial, dan budaya dengan Teknologi Informasi?','Prinsip apa yang digunakan sebagai acuan Cyberethics?','Bagaimana secara bijak menyikapi perubahan kehidupan masyarakat sebagai dampak Teknologi Informasi?'].map((x,i)=>`<div class="card rv"><span class="n">${i+1}</span><p>${x}</p></div>`).join('');
+$('#mods').innerHTML=M.map((m,i)=>`<section class="sec" id="${m.id}" data-i="${i}"><div class="wrap"><div class="mk">Module 0${i+1}</div><h2 class="sp">${m.t}</h2><p class="lead rv">${m.d}</p>${m.b.join('')}
+<div class="mf glass rv">${i?`<a class="btn" href="#${M[i-1].id}" data-go>← Sebelumnya</a>`:'<span></span>'}<button class="btn dn" data-done="${i}">Tandai selesai</button>${i<3?`<a class="btn p" href="#${M[i+1].id}" data-go>Berikutnya →</a>`:`<a class="btn p" href="#quiz" data-go>Ke quiz →</a>`}</div></div></section>`).join('');
+$('#toc').innerHTML=`<div class="bar" style="margin-bottom:10px"><span id="b1"></span></div>`+[['home','Home'],...M.map((m,i)=>[m.id,`${i+1}. ${m.t}`]),['quiz','Quiz &amp; refleksi']].map(x=>`<a href="#${x[0]}" data-go data-t="${x[0]}">${x[1]}<em></em></a>`).join('');
+const ans=[];
+$('#qz').innerHTML=Q.map((q,i)=>`<div class="glass q rv" data-q="${i}"><h4>${i+1}. ${q[0]}</h4>${q[1].map((o,j)=>`<button class="o" data-a="${j}">${o}</button>`).join('')}<div class="fb"></div></div>`).join('');
+$('#rf').innerHTML=`<h4>Refleksi</h4><p>Pilih satu pertanyaan mendasar dan tuliskan jawabanmu dengan kata-kata sendiri. Tulisan tidak disimpan.</p><textarea aria-label="Refleksi" placeholder="Bagaimana kamu menyikapi perubahan kehidupan masyarakat akibat teknologi informasi secara bijak?"></textarea>`;
+
+/* Globe */
+let g='<svg viewBox="0 0 400 400"><defs><radialGradient id="rg" cx="40%" cy="35%"><stop offset="0" stop-color="#38BDF8" stop-opacity=".45"/><stop offset="1" stop-color="#172554" stop-opacity=".5"/></radialGradient></defs><circle cx="200" cy="200" r="130" fill="url(#rg)" stroke="#38BDF8" stroke-opacity=".5"/>';
+g+='<g class="ring" fill="none" stroke="#38BDF8" stroke-opacity=".35">'+[130,95,45].map(r=>`<ellipse cx="200" cy="200" rx="${r}" ry="130"/>`).join('')+'</g><g stroke="#38BDF8" stroke-opacity=".28" fill="none"><ellipse cx="200" cy="200" rx="130" ry="40"/><ellipse cx="200" cy="200" rx="130" ry="90"/></g>';
+g+='<g class="ring r2"><ellipse cx="200" cy="200" rx="185" ry="70" fill="none" stroke="#2563EB" stroke-opacity=".6" stroke-dasharray="3 7" transform="rotate(-24 200 200)"/></g>';
+const P=[[120,140],[250,110],[300,210],[210,300],[110,250],[200,200],[270,290],[150,90]];
+g+=P.map((p,i)=>P.slice(i+1,i+3).map(q=>`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="#F8FAFC" stroke-opacity=".25"/>`).join('')).join('');
+g+=P.map((p,i)=>`<circle class="nd" style="animation-delay:${i*.4}s" cx="${p[0]}" cy="${p[1]}" r="${i==5?7:4}" fill="${i%2?'#38BDF8':'#F8FAFC'}"/>`).join('')+'</svg>';
+$('#globe').innerHTML=g;
+
+/* Interaction layers */
+function lay(i){const l=L[i];$$('#lay button').forEach((b,j)=>b.classList.toggle('on',i==j));$('#lv').innerHTML=card('<span>Cyberspace (Internet)</span>'+l[0],pills(l[2]),'k')+card('<span>Real World</span>'+l[1],pills(l[3]),'k')}lay(0);
+
+/* Progress */
+const done=new Set();
+function prog(){const n=done.size,p=n*25;$('#pct').textContent=p+'%';$('#pct2').textContent=n+' dari 4 modul selesai';$('#b1').style.width=$('#b2').style.width=p+'%';
+ $$('[data-done]').forEach(b=>b.textContent=done.has(+b.dataset.done)?'✓ Selesai':'Tandai selesai');
+ M.forEach((m,i)=>{$(`#toc [data-t=${m.id}] em`).textContent=done.has(i)?'✓':''})}
+prog();
+
+/* Efek sparkle */
+const cv=$('#fx'),cx=cv.getContext('2d');let W,H,ps=[],run=false;
+function rs(){const d=Math.min(devicePixelRatio||1,2);W=cv.width=innerWidth*d;H=cv.height=innerHeight*d;cx.setTransform(d,0,0,d,0,0)}rs();addEventListener('resize',rs);
+const COL=['56,189,248','37,99,235','248,250,252'];
+function burst(x,y,n=14,trail){if(RM)return;n=Math.min(n,18);for(let i=0;i<n&&ps.length<90;i++){const a=Math.random()*6.283,v=trail?.3+Math.random()*.8:1.4+Math.random()*3.2;ps.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:trail?1.5+Math.random()*2:2+Math.random()*5,l:1,k:trail?.03:.016+Math.random()*.018,t:Math.random()*3|0,c:COL[Math.random()*3|0],r:Math.random()*3})}if(!run){run=true;requestAnimationFrame(tick)}}
+function shape(p){cx.beginPath();if(p.t==0){cx.arc(0,0,p.s*.5,0,6.283)}else if(p.t==1){cx.moveTo(0,-p.s);cx.lineTo(p.s*.6,0);cx.lineTo(0,p.s);cx.lineTo(-p.s*.6,0);cx.closePath()}else{for(let i=0;i<8;i++){const r=i%2?p.s*.3:p.s*1.2,a=i*Math.PI/4;cx.lineTo(Math.cos(a)*r,Math.sin(a)*r)}cx.closePath()}cx.fill()}
+function tick(){cx.clearRect(0,0,innerWidth,innerHeight);ps=ps.filter(p=>p.l>0);for(const p of ps){p.x+=p.vx;p.y+=p.vy;p.vx*=.95;p.vy*=.95;p.vy+=.012;p.l-=p.k;p.r+=.05;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.globalAlpha=Math.max(p.l,0);cx.fillStyle=`rgb(${p.c})`;cx.shadowColor=`rgb(${p.c})`;cx.shadowBlur=10;cx.scale(p.l*.6+.4,p.l*.6+.4);shape(p);cx.restore()}if(ps.length)requestAnimationFrame(tick);else run=false}
+addEventListener('pointerdown',e=>burst(e.clientX,e.clientY,14),{passive:true});
+let mv=0;addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;if(++mv%3==0)burst(e.clientX,e.clientY,1,true);const c=e.target.closest&&e.target.closest('.card');if(c&&!RM){const r=c.getBoundingClientRect();c.style.setProperty('--mx',((e.clientX-r.left)/r.width-.5)*8+'px');c.style.setProperty('--my',((e.clientY-r.top)/r.height-.5)*8+'px')}},{passive:true});
+addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.card');if(c){c.style.removeProperty('--mx');c.style.removeProperty('--my')}});
+
+/* Scroll & animasi */
+let lenis;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:.1});}
+const go=(t)=>{const el=$(t);if(!el)return;lenis?lenis.scrollTo(el,{offset:-70}):el.scrollIntoView({behavior:RM?'auto':'smooth'})};
+if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger);
+ if(lenis){lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0)}
+ if(!RM){
+  $$('.sp').forEach(h=>{h.setAttribute('aria-label',h.textContent);h.innerHTML=h.textContent.split(' ').map(w=>`<span class="w" aria-hidden="true"><i>${w}</i></span>`).join(' ');
+   const t=gsap.from($$('i',h),{yPercent:110,opacity:0,duration:.9,ease:'power3.out',stagger:.07,paused:true});
+   h.id=='h1'?setTimeout(()=>t.play(),150):ScrollTrigger.create({trigger:h,start:'top 88%',once:true,onEnter:()=>t.play()})});
+  gsap.set('.rv,.card,.tl li',{opacity:0,y:28});
+  ScrollTrigger.batch('.rv,.card,.tl li',{start:'top 92%',once:true,onEnter:b=>gsap.to(b,{opacity:1,y:0,duration:.7,ease:'power2.out',stagger:.07,overwrite:true})});
+  $$('.orb').forEach(o=>gsap.to(o,{y:+o.dataset.p*4,ease:'none',scrollTrigger:{scrub:1,start:0,end:'max'}}));
+  gsap.to('#globe svg',{yPercent:-10,ease:'none',scrollTrigger:{trigger:'#home',scrub:1,start:'top top',end:'bottom top'}});
+  gsap.to('.orb',{x:'+=30',y:'+=24',duration:9,yoyo:true,repeat:-1,ease:'sine.inOut',stagger:2});
+ }
+ $$('details').forEach(d=>d.addEventListener('toggle',()=>{if(d.open&&!RM)gsap.to($$('.card,.tl li',d),{opacity:1,y:0,duration:.5,stagger:.05,overwrite:true});ScrollTrigger.refresh()}));
+ ['home','about',...M.map(m=>m.id),'quiz'].forEach(id=>ScrollTrigger.create({trigger:'#'+id,start:'top 50%',end:'bottom 50%',onToggle:s=>{if(s.isActive){$$('#toc a,nav .lk a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+id))}}}));
+}
+function sc(){const m=document.documentElement.scrollHeight-innerHeight,y=scrollY;$('#rp').style.width=(m>0?y/m*100:0)+'%';$('#nav').classList.toggle('s',y>40);$('#top').classList.toggle('v',y>700)}
+addEventListener('scroll',sc,{passive:true});sc();
+
+/* Interaksi */
+document.addEventListener('click',e=>{
+ const b=e.target.closest('.btn');if(b){const r=b.getBoundingClientRect(),s=document.createElement('span');s.className='rip';const z=Math.max(r.width,r.height)*2.2;s.style.cssText=`left:${e.clientX-r.left}px;top:${e.clientY-r.top}px;width:${z}px;height:${z}px`;b.appendChild(s);setTimeout(()=>s.remove(),650)}
+ const a=e.target.closest('a[href^="#"]');if(a){e.preventDefault();go(a.getAttribute('href'));$('#lk').classList.remove('o');$('#toc').classList.remove('o')}
+ if(e.target.closest('[data-top]')){e.preventDefault();lenis?lenis.scrollTo(0):scrollTo({top:0,behavior:'smooth'})}
+ const l=e.target.closest('[data-l]');if(l)lay(+l.dataset.l);
+ const d=e.target.closest('[data-done]');if(d){const i=+d.dataset.done;if(done.has(i))done.delete(i);else{done.add(i);const r=d.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,18);if(window.Motion)Motion.animate(d,{scale:[1,1.12,1]},{duration:.5})}prog()}
+ const o=e.target.closest('[data-a]');if(o){const q=o.closest('[data-q]'),i=+q.dataset.q;if(ans[i]!=null)return;const j=+o.dataset.a,ok=j==Q[i][2];ans[i]=ok;$$('.o',q).forEach((x,k)=>{x.disabled=true;if(k==Q[i][2])x.classList.add('ok');else if(k==j)x.classList.add('no')});
+  const f=$('.fb',q);f.style.display='block';f.innerHTML=(ok?'<b style="color:#34d399">Benar.</b> ':'<b style="color:#f87171">Belum tepat.</b> ')+Q[i][3];
+  if(window.Motion)Motion.animate(f,{opacity:[0,1],y:[8,0]},{duration:.4});if(ok){const r=o.getBoundingClientRect();burst(r.left+40,r.top+r.height/2,10)}
+  if(ans.filter(x=>x!=null).length==Q.length){const n=ans.filter(Boolean).length,s=document.createElement('p');s.className='hl';s.style.cssText='font-size:18px;margin-top:14px';s.textContent=`Skor akhir: ${n} dari ${Q.length}.`;$('#qz').appendChild(s)}}
+});
+$('#pb').onclick=()=>{const t=$('#toc');t.classList.toggle('o');$('#pb').setAttribute('aria-expanded',t.classList.contains('o'))};
+$('#ham').onclick=()=>$('#lk').classList.toggle('o');
+addEventListener('keydown',e=>{if(e.key=='Escape'){$('#toc').classList.remove('o');$('#lk').classList.remove('o')}});
+</script>
+</body>
+</html>
